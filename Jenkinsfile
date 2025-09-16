@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-               git branch: 'main', url:'https://github.com/siva-123-hash/samsung-mobile-site.git'
+               git branch: 'main', url:'https://github.com/Srikanth-169/samsung-mobile-site.git'
             }
         } 
         stage('Build') {
@@ -17,14 +17,14 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh 'docker build -t siva0927/samsung-site:v1 .'
+                    sh 'docker build -t sri143/samsung-site:v1 .'
                 }
             }
         }
 
         stage('Push to DockerHub') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'siva0927-dockerhub', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
+                withCredentials([usernamePassword(credentialsId: 'srikanth169-dockerhub', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
                     sh "echo $PASS | docker login -u $USER --password-stdin"
                     sh "docker push siva0927/samsung-site:v1"
                 }
@@ -41,7 +41,7 @@ pipeline {
             steps {
                 sh '''
                 docker service rm samsung-site || true
-                docker service create --name samsung-site -p 8081:80 siva0927/samsung-site:v1
+                docker service create --name samsung-site -p 8081:80 sri143/samsung-site:v1
                 '''
             }
         }
