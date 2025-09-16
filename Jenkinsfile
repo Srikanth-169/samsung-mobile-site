@@ -17,7 +17,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh 'docker build -t sri143/samsung-site:v1 .'
+                    sh 'docker build -t srikanth169/samsung-site:v1 .'
                 }
             }
         }
@@ -26,14 +26,14 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'srikanth169-dockerhub', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
                     sh "echo $PASS | docker login -u $USER --password-stdin"
-                    sh "docker push sri143/samsung-site:v1"
+                    sh "docker push srikanth169/samsung-site:v1"
                 }
             }
         }
 
         stage('Run Container (Local Test)') {
             steps {
-                sh 'docker run -d -p 8081:80 --name samsung-site-test sri143/samsung-site:v1 || true'
+                sh 'docker run -d -p 8081:80 --name samsung-site-test srikanth169/samsung-site:v1 || true'
             }
         }
 
@@ -41,7 +41,7 @@ pipeline {
             steps {
                 sh '''
                 docker service rm samsung-site || true
-                docker service create --name samsung-site -p 8081:80 sri143/samsung-site:v1
+                docker service create --name samsung-site -p 8081:80 srikanth169/samsung-site:v1
                 '''
             }
         }
